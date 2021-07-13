@@ -52,4 +52,22 @@ void main() {
     final result = sut.orElse(() => "VALOR COM ERRO");
     expect(result, "VALOR COM ERRO");
   });
+
+  test('should flat a Right istances', () {
+    final sut = Right("1");
+    final toNumber = sut.flatMap((r) => Right(int.parse(r)));
+    toNumber.fold(
+      ifLeft: (f) => throw Exception(),
+      ifRight: (r) => expect(r, 1),
+    );
+  });
+
+  test('should not flat a Left istances', () {
+    final sut = Left("1");
+    final toNumber = sut.flatMap((r) => Right(int.parse(r)));
+    toNumber.fold(
+      ifLeft: (f) => expect(f, "1"),
+      ifRight: (r) => throw Exception(),
+    );
+  });
 }

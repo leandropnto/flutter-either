@@ -7,7 +7,10 @@ abstract class Either<Failure, Result> {
   });
 
   Either<Failure, T> map<T>(T f(Result r));
+
   Result orElse(Result f());
+
+  Either<Failure, T> flatMap<T>(Either<Failure, T> f(Result r));
 }
 
 class Left<Failure, Result> extends Either<Failure, Result> {
@@ -28,6 +31,10 @@ class Left<Failure, Result> extends Either<Failure, Result> {
 
   @override
   Result orElse(Result Function() f) => f();
+
+  @override
+  Either<Failure, T> flatMap<T>(Either<Failure, T> Function(Result r) f) =>
+      Left(_value);
 }
 
 class Right<Failure, Result> extends Either<Failure, Result> {
@@ -48,4 +55,8 @@ class Right<Failure, Result> extends Either<Failure, Result> {
 
   @override
   Result orElse(Result Function() f) => _value;
+
+  @override
+  Either<Failure, T> flatMap<T>(Either<Failure, T> Function(Result r) f) =>
+      f(_value);
 }
