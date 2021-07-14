@@ -86,3 +86,7 @@ class Some<Result> extends Option<Result> {
   @override
   Option<T> map<T>(T Function(Result r) f) => Some(f(_value));
 }
+
+None<Unit> none() => None._();
+Some<T> some<T>(T value) => Some(value);
+Option<T> someOf<T>(T? value) => value != null ? Some(value) : None._();
