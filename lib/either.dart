@@ -1,5 +1,7 @@
 library either;
 
+export 'option.dart';
+
 abstract class Either<Failure, Result> {
   T fold<T>({
     required T ifLeft(Failure f),
