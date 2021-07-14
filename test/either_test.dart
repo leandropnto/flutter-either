@@ -70,4 +70,16 @@ void main() {
       ifRight: (r) => throw Exception(),
     );
   });
+
+  test('should return is Right true', () {
+    final sut = Right("1");
+    expect(sut.isRight(), true);
+    expect(sut.ifLeft(), false);
+  });
+
+  test('should return is Left true', () {
+    final sut = Left("1");
+    expect(sut.isRight(), false);
+    expect(sut.ifLeft(), true);
+  });
 }
