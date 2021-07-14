@@ -13,7 +13,7 @@ abstract class Either<Failure, Result> {
   Either<Failure, T> flatMap<T>(Either<Failure, T> f(Result r));
 
   bool isRight() => this is Right<Failure, Result>;
-  bool ifLeft() => this is Left<Failure, Result>;
+  bool isLeft() => this is Left<Failure, Result>;
 }
 
 class Left<Failure, Result> extends Either<Failure, Result> {
