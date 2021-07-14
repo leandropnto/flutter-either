@@ -74,12 +74,12 @@ void main() {
   test('should return is Right true', () {
     final sut = Right("1");
     expect(sut.isRight(), true);
-    expect(sut.ifLeft(), false);
+    expect(sut.isLeft(), false);
   });
 
   test('should return is Left true', () {
     final sut = Left("1");
     expect(sut.isRight(), false);
-    expect(sut.ifLeft(), true);
+    expect(sut.isLeft(), true);
   });
 }
