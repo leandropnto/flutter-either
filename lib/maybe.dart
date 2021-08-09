@@ -1,22 +1,24 @@
 library maybe;
 
+import 'dart:async';
+
 class Maybe<T> {
-  final T Function() _value;
+  final FutureOr<T> Function() _value;
 
   Maybe._(this._value);
 
-  R fold<R>({
+  FutureOr<R> fold<R>({
     required R Function() onComplete,
     required R Function(Error) onError,
     required R Function(T) onSuccess,
-  }) {
+  }) async {
     try {
-      final result = _value();
+      final result = await _value();
       if (result is List) {
         if (result.isEmpty) {
           return onComplete();
         } else {
-          return onSuccess(_value());
+          return onSuccess(result);
         }
       } else {
         return onSuccess(result);
@@ -26,13 +28,13 @@ class Maybe<T> {
     }
   }
 
-  Maybe<R> map<R>(R Function(T) builder) => fold(
+  FutureOr<Maybe<R>> map<R>(R Function(T) builder) async => fold(
         onComplete: () => this as Maybe<R>,
         onError: (error) => this as Maybe<R>,
         onSuccess: (value) => Maybe._(() => builder(value)),
       );
 
-  Maybe<R> flatMap<R>(Maybe<R> Function(T) builder) => fold(
+  FutureOr<Maybe<R>> flatMap<R>(Maybe<R> Function(T) builder) async => fold(
         onComplete: () => this as Maybe<R>,
         onError: (error) => this as Maybe<R>,
         onSuccess: (value) => builder(value),
