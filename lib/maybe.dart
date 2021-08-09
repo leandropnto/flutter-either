@@ -26,5 +26,17 @@ class Maybe<T> {
     }
   }
 
+  Maybe<R> map<R>(R Function(T) builder) => fold(
+        onComplete: () => this as Maybe<R>,
+        onError: (error) => this as Maybe<R>,
+        onSuccess: (value) => Maybe._(() => builder(value)),
+      );
+
+  Maybe<R> flatMap<R>(Maybe<R> Function(T) builder) => fold(
+        onComplete: () => this as Maybe<R>,
+        onError: (error) => this as Maybe<R>,
+        onSuccess: (value) => builder(value),
+      );
+
   static Maybe<R> just<R>(R Function() value) => Maybe<R>._(value);
 }
